@@ -17,6 +17,16 @@ public class TransferPushRequest {
     Integer id;
     String citizenName;
     String citizenEmail;
-    List<Map<String, String>> documents;
+    Documents documents;
+    String confirmationURL;
 
+    @Value
+    @Builder(toBuilder = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Documents {
+
+        Map<String, List<String>> documentMap;
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.distribuidos.requests.services;
 
+import com.distribuidos.requests.config.EnvironmentConfig;
 import com.distribuidos.requests.exceptions.CentralizerGetOperatorsException;
 import com.distribuidos.requests.exceptions.ExternalPushUserException;
 import com.distribuidos.requests.models.TransferPushRequest;
@@ -15,7 +16,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,20 +29,21 @@ import static reactor.core.publisher.Mono.error;
 public class RequestsService {
 
     private CentralizerFacade centralizerFacade;
+    private final EnvironmentConfig environmentConfig;
     private DocumentsFacade documentsFacade;
+    private static final String DELETE_DOCUMENTS_ENDPOINT = "/delete/all/%s";
     private final WebClient webClient;
     private static final Integer MAX_EXTERNAL_RETRIES = 2;
 
-    private static List<Map<String, String>> mapListToDocumentsMap(List<String> uris) {
-        List<Map<String, String>> mapList = new ArrayList<>();
+    private Map<String, List<String>> mapListToDocumentsMap(List<String> documents) {
+        Map<String, List<String>> documentsMap = new HashMap<>();
 
-        for (int i = 0; i < uris.size(); i++) {
-            Map<String, String> mapa = new HashMap<>();
-            String documentId = "Document" + (i + 1); // Document1, Document2, ...
-            mapa.put(documentId, uris.get(i));
-            mapList.add(mapa);
+        for (int i = 0; i < documents.size(); i++) {
+            String documentKey = "Document" + (i + 1);
+            documentsMap.put(documentKey, List.of(documents.get(i)));
         }
-        return mapList;
+
+        return documentsMap;
     }
 
     private Mono<Boolean> pushElementToOperatorUri(String operatorUri, TransferPushRequest request) {
@@ -89,11 +90,17 @@ public class RequestsService {
                     String apiEndpoint = data.getT1();
                     List<String> documents = data.getT2();
 
+                    log.info("Transfer endpoint found for operator: " + apiEndpoint);
+
                     TransferPushRequest pushRequest = TransferPushRequest.builder()
                             .id(Integer.valueOf(userId))
-                            .documents(mapListToDocumentsMap(documents))
+                            .documents(TransferPushRequest.Documents.builder()
+                                    .documentMap(mapListToDocumentsMap(documents))
+                                    .build())
                             .citizenEmail(request.getCitizenEmail())
                             .citizenName(request.getCitizenName())
+                            .confirmationURL(environmentConfig.getDomains().getDocumentsDomain()
+                                    + String.format(DELETE_DOCUMENTS_ENDPOINT, request.getUserId()))
                             .build();
                     return pushElementToOperatorUri(apiEndpoint, pushRequest);
                 });

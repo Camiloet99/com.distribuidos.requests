@@ -3,6 +3,7 @@ package com.distribuidos.requests.services.facades.documents;
 import com.distribuidos.requests.config.EnvironmentConfig;
 import com.distribuidos.requests.exceptions.CentralizerGetOperatorsException;
 import com.distribuidos.requests.exceptions.DocumentsDownloadUpstreamException;
+import com.distribuidos.requests.models.DocumentEntity;
 import com.distribuidos.requests.models.ResponseBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ public class DocumentsFacade {
     private final EnvironmentConfig environmentConfig;
     private final WebClient webClient;
 
-    private static final String GET_ALL_DOCUMENTS_URI = "%s";
-    private static final ParameterizedTypeReference<ResponseBody<List<String>>> RESPONSE_TYPE_DOCUMENTS =
+    private static final String GET_ALL_DOCUMENTS_URI = "/list/%s";
+    private static final ParameterizedTypeReference<ResponseBody<List<DocumentEntity>>> RESPONSE_TYPE_DOCUMENTS =
             new ParameterizedTypeReference<>() {
             };
 
@@ -45,7 +46,10 @@ public class DocumentsFacade {
                     HttpStatus httpStatus = HttpStatus.valueOf(documentsResponse.statusCode().value());
                     if (HttpStatus.OK.equals(httpStatus)) {
                         return documentsResponse.bodyToMono(RESPONSE_TYPE_DOCUMENTS)
-                                .map(ResponseBody::getResult);
+                                .map(ResponseBody::getResult)
+                                .map(documentEntities -> documentEntities.stream()
+                                        .map(DocumentEntity::getDownloadLink)
+                                        .toList());
                     }
 
                     HttpHeaders responseHeaders = documentsResponse.headers().asHttpHeaders();

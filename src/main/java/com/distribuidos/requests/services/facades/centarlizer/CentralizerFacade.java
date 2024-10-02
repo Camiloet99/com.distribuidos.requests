@@ -27,7 +27,7 @@ public class CentralizerFacade {
     private final WebClient webClient;
     private final EnvironmentConfig environmentConfig;
 
-    private static final String OPERATORS_LIST_PATH = "/apis/";
+    private static final String OPERATORS_LIST_PATH = "/getOperators";
 
     private static final ParameterizedTypeReference<List<OperatorsResponse>> RESPONSE_TYPE_OPERATORS =
             new ParameterizedTypeReference<>() {
