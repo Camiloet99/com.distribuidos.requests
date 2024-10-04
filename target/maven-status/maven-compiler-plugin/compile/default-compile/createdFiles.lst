@@ -6,9 +6,7 @@ com/distribuidos/requests/models/TransferPushRequest$TransferPushRequestBuilder.
 com/distribuidos/requests/models/ResponseBody$ResponseBodyBuilder.class
 com/distribuidos/requests/services/facades/centarlizer/models/OperatorsResponse$OperatorsResponseBuilder.class
 com/distribuidos/requests/config/KafkaConfiguration.class
-com/distribuidos/requests/security/JwtAuthenticationConverter.class
 com/distribuidos/requests/controllers/RequestsController.class
-com/distribuidos/requests/config/SecurityConfig.class
 com/distribuidos/requests/services/RequestsService.class
 com/distribuidos/requests/models/TransferRequest.class
 com/distribuidos/requests/models/ResponseBody.class
@@ -17,8 +15,10 @@ com/distribuidos/requests/config/EnvironmentConfig$ServiceRetry.class
 com/distribuidos/requests/services/facades/documents/DocumentsFacade.class
 com/distribuidos/requests/models/TransferPushRequest.class
 com/distribuidos/requests/services/facades/centarlizer/CentralizerFacade$1.class
+com/distribuidos/requests/models/TransferPushRequest$Documents$DocumentsBuilder.class
+com/distribuidos/requests/models/DocumentEntity$DocumentEntityBuilder.class
+com/distribuidos/requests/models/DocumentEntity.class
 com/distribuidos/requests/services/facades/centarlizer/models/OperatorsResponse.class
-com/distribuidos/requests/security/JwtUtil.class
 com/distribuidos/requests/exceptions/ErrorCodes.class
 com/distribuidos/requests/services/facades/centarlizer/CentralizerFacade.class
 com/distribuidos/requests/models/TransferRequest$TransferRequestBuilder.class
@@ -26,5 +26,5 @@ com/distribuidos/requests/Application.class
 com/distribuidos/requests/exceptions/CentralizerGetOperatorsException.class
 com/distribuidos/requests/controllers/ControllerUtils.class
 com/distribuidos/requests/config/WebClientConfig.class
-com/distribuidos/requests/security/JwtAuthenticationFilter.class
 com/distribuidos/requests/config/EnvironmentConfig.class
+com/distribuidos/requests/models/TransferPushRequest$Documents.class
