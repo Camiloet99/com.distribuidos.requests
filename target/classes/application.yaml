@@ -31,9 +31,9 @@ environment:
   operator-id: ${OPERATOR_ID:66dfa51b4d8f56001517a04c}
   operator-name: ${OPERATOR_NAME:ArchivoFiel}
   domains:
-    notifications-domain: ${NOTIFICATIONS_DOMAIN:${environment.domains.base}}
+    notifications-domain: ${NOTIFICATIONS_DOMAIN:http://notifications}
     centralizer-domain: ${CENTRALIZER_DOMAIN:https://govcarpeta-apis-83e1c996379d.herokuapp.com/apis}
-    documents-domain: ${DOCUMENTS_DOMAIN:${environment.domains.base}}
+    documents-domain: ${DOCUMENTS_DOMAIN:http://documents}
   service-retry:
     max-attempts: ${SERVICE_RETRY_MAX_ATTEMPTS:2}
   service-name: distribuidos/requests

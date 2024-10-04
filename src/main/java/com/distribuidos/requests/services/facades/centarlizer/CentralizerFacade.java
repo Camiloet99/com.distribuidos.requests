@@ -71,4 +71,36 @@ public class CentralizerFacade {
 
     }
 
+    public Mono<List<OperatorsResponse>> getOperatorsList() {
+
+        String resourceUri = environmentConfig.getDomains().getCentralizerDomain()
+                + OPERATORS_LIST_PATH;
+
+        return webClient
+                .get()
+                .uri(resourceUri)
+                .exchangeToMono(operatorsResponse -> {
+                    HttpStatus httpStatus = HttpStatus.valueOf(operatorsResponse.statusCode().value());
+
+                    if (httpStatus.is2xxSuccessful()) {
+                        return operatorsResponse.bodyToMono(RESPONSE_TYPE_OPERATORS);
+                    }
+                    HttpHeaders responseHeaders = operatorsResponse.headers().asHttpHeaders();
+                    return operatorsResponse.bodyToMono(String.class)
+                            .flatMap(responseBody -> {
+                                log.error("{} - The centralizer service responded with "
+                                                + "an unexpected failure response for: {}"
+                                                + "\nStatus Code: {}\nResponse Headers: {}\nResponse Body: {}",
+                                        CENTRALIZER_OPERATORS_EXCEPTION, resourceUri, httpStatus, responseHeaders,
+                                        responseBody);
+                                return error(new CentralizerGetOperatorsException(responseBody));
+                            });
+                })
+                .retryWhen(Retry
+                        .max(environmentConfig.getServiceRetry().getMaxAttempts())
+                        .filter(CentralizerGetOperatorsException.class::isInstance)
+                        .onRetryExhaustedThrow((ignore1, ignore2) -> ignore2.failure()));
+
+    }
+
 }
