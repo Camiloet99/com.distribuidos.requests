@@ -15,7 +15,6 @@ com/distribuidos/requests/config/EnvironmentConfig$ServiceRetry.class
 com/distribuidos/requests/services/facades/documents/DocumentsFacade.class
 com/distribuidos/requests/models/TransferPushRequest.class
 com/distribuidos/requests/services/facades/centarlizer/CentralizerFacade$1.class
-com/distribuidos/requests/models/TransferPushRequest$Documents$DocumentsBuilder.class
 com/distribuidos/requests/models/DocumentEntity$DocumentEntityBuilder.class
 com/distribuidos/requests/models/DocumentEntity.class
 com/distribuidos/requests/services/facades/centarlizer/models/OperatorsResponse.class
@@ -27,4 +26,3 @@ com/distribuidos/requests/exceptions/CentralizerGetOperatorsException.class
 com/distribuidos/requests/controllers/ControllerUtils.class
 com/distribuidos/requests/config/WebClientConfig.class
 com/distribuidos/requests/config/EnvironmentConfig.class
-com/distribuidos/requests/models/TransferPushRequest$Documents.class

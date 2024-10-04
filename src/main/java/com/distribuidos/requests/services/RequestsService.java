@@ -94,9 +94,7 @@ public class RequestsService {
 
                     TransferPushRequest pushRequest = TransferPushRequest.builder()
                             .id(Integer.valueOf(userId))
-                            .documents(TransferPushRequest.Documents.builder()
-                                    .documentMap(mapListToDocumentsMap(documents))
-                                    .build())
+                            .documents(mapListToDocumentsMap(documents))
                             .citizenEmail(request.getCitizenEmail())
                             .citizenName(request.getCitizenName())
                             .confirmationURL(environmentConfig.getDomains().getDocumentsDomain()
