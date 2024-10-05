@@ -33,7 +33,7 @@ public class DocumentsFacade {
             new ParameterizedTypeReference<>() {
             };
 
-    public Mono<List<String>> getAllDocumentsFromUser(String documentId) {
+    public Mono<List<String>> getAllDocumentsFromUser(Long documentId) {
 
         String resourceUri = environmentConfig.getDomains().getDocumentsDomain()
                 + String.format(GET_ALL_DOCUMENTS_URI, documentId);

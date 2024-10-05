@@ -7,23 +7,19 @@ server:
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
 spring:
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}           # Dirección del servidor RabbitMQ (o donde esté corriendo)
+    port: ${RABBIT_PORT:5672}                # Puerto de RabbitMQ
+    username: ${RABBIT_USERNAME:guest}           # Usuario de RabbitMQ
+    password: ${RABBIT_PASSWORD:guest}           # Contraseña de RabbitMQ
+    virtual-host: /           # Virtual host (normalmente "/" por defecto)
+    exchange: ${RABBIT_EXCHANGE:requests-exchange}  # El exchange que usaremos
+    queue: ${RABBIT_QUEUE:requests-queue}         # El nombre de la cola
+    routing-key: ${RABBIT_ROUTING_KEY:requests-routing-key}  # La clave de enrutamiento para el binding
   main:
     banner-mode: console
     lazy-initialization: true
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-    consumer:
-      group-id: ${KAFKA_GROUP_ID:distribuidos-group}
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: "*"
-      auto-offset-reset: earliest
-    topic:
-      name: ${KAFKA_TOPIC_NAME:requests-topic}
+
 ---
 # ENVIRONMENT
 environment:

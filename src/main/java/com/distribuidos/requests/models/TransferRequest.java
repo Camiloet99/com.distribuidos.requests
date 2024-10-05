@@ -11,7 +11,7 @@ import lombok.Value;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransferRequest {
 
-    String userId;
+    Long userId;
     String citizenName;
     String citizenEmail;
     String operatorId;

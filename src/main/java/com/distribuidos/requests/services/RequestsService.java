@@ -22,6 +22,7 @@ import java.util.Map;
 
 import static com.distribuidos.requests.exceptions.ErrorCodes.EXTERNAL_UPSTREAM_PUSH_ERROR;
 import static reactor.core.publisher.Mono.error;
+import static reactor.core.publisher.Mono.just;
 
 @Slf4j
 @Service
@@ -47,6 +48,9 @@ public class RequestsService {
     }
 
     private Mono<Boolean> pushElementToOperatorUri(String operatorUri, TransferPushRequest request) {
+
+        log.info("pushing documents " + request.toString() + " to operatorUri " + operatorUri);
+
         return webClient
                 .post()
                 .uri(operatorUri)
@@ -77,7 +81,7 @@ public class RequestsService {
     }
 
     public Mono<Boolean> handleGuestsRequest(TransferRequest request) {
-        String userId = request.getUserId();
+        Long userId = request.getUserId();
         String operatorId = request.getOperatorId();
 
         log.info("Trying to transfer user " + userId + " to operatorId " + operatorId);
@@ -93,14 +97,15 @@ public class RequestsService {
                     log.info("Transfer endpoint found for operator: " + apiEndpoint);
 
                     TransferPushRequest pushRequest = TransferPushRequest.builder()
-                            .id(Integer.valueOf(userId))
+                            .id(userId)
                             .documents(mapListToDocumentsMap(documents))
                             .citizenEmail(request.getCitizenEmail())
                             .citizenName(request.getCitizenName())
                             .confirmationURL(environmentConfig.getDomains().getDocumentsDomain()
                                     + String.format(DELETE_DOCUMENTS_ENDPOINT, request.getUserId()))
                             .build();
-                    return pushElementToOperatorUri(apiEndpoint, pushRequest);
+                    return pushElementToOperatorUri(apiEndpoint, pushRequest)
+                            .flatMap(aBoolean -> just(true));
                 });
     }
 
